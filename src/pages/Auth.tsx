@@ -23,9 +23,9 @@ const nameSchema = z.string().trim().min(2, { message: "Name must be at least 2 
 type AuthMode = "signin" | "signup" | "forgot";
 
 export default function Auth() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { signIn, signUp, resetPassword, user, loading } = useAuth();
+  const { signIn, signUp, signOut, resetPassword, loading } = useAuth();
   const { toast } = useToast();
   
   const initialMode = (searchParams.get("mode") as AuthMode) || "signin";
@@ -41,11 +41,18 @@ export default function Auth() {
   const [customProfession, setCustomProfession] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Clear any stale session when entering signup mode
   useEffect(() => {
-    if (!loading && user) {
-      navigate("/dashboard");
-    }
-  }, [user, loading, navigate]);
+    const clearSessionForSignup = async () => {
+      if (mode === "signup") {
+        // Sign out any existing session to prevent stale auth state
+        await signOut();
+        // Update URL to include signup mode
+        setSearchParams({ mode: "signup" });
+      }
+    };
+    clearSessionForSignup();
+  }, [mode, signOut, setSearchParams]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -141,11 +148,15 @@ export default function Auth() {
             });
           }
         } else {
+          // Sign out immediately after signup to require explicit login
+          await signOut();
           toast({
             title: "Account created successfully!",
             description: "Please sign in with your credentials.",
           });
           clearForm();
+          // Remove signup mode from URL and switch to signin
+          setSearchParams({});
           setMode("signin");
         }
       } else if (mode === "forgot") {
@@ -188,6 +199,12 @@ export default function Auth() {
   const switchMode = (newMode: AuthMode) => {
     clearForm();
     setMode(newMode);
+    // Update URL params - clear for signin, set mode for signup/forgot
+    if (newMode === "signin") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ mode: newMode });
+    }
   };
 
   if (loading) {
