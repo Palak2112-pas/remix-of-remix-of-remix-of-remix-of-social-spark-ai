@@ -142,10 +142,11 @@ export default function Auth() {
           }
         } else {
           toast({
-            title: "Welcome to SocialPulse!",
-            description: "Your account has been created successfully.",
+            title: "Account created successfully!",
+            description: "Please sign in with your credentials.",
           });
-          navigate("/dashboard");
+          clearForm();
+          setMode("signin");
         }
       } else if (mode === "forgot") {
         const { error } = await resetPassword(email);
