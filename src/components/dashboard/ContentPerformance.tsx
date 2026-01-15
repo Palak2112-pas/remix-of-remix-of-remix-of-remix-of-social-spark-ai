@@ -286,56 +286,72 @@ export function ContentPerformance() {
         </div>
 
         {/* Posts Table */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {filteredPosts.map((post) => (
             <div
               key={post.id}
               onClick={() => setSelectedPost(post)}
-              className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all cursor-pointer group border border-transparent hover:border-primary/20"
+              className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-muted/30 hover:bg-muted/50 transition-all cursor-pointer group border border-transparent hover:border-primary/20 min-h-[72px]"
             >
+              {/* Thumbnail */}
               <img
                 src={post.thumbnail}
                 alt={post.title}
-                className="w-14 h-14 rounded-lg object-cover"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover shrink-0"
               />
               
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={cn("text-xs px-2 py-0.5 rounded-full border", typeColors[post.type])}>
+              {/* Title & Type */}
+              <div className="min-w-0 py-1">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className={cn(
+                    "text-xs px-2 py-0.5 rounded-full border shrink-0 font-medium",
+                    typeColors[post.type]
+                  )}>
                     {post.type}
                   </span>
-                  <span className="text-xs text-muted-foreground">{post.postedAt}</span>
+                  <span className="text-xs text-muted-foreground shrink-0">{post.postedAt}</span>
                 </div>
                 <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
                   {post.title}
                 </p>
               </div>
 
-              <div className="flex items-center gap-6 text-muted-foreground text-sm">
-                <div className="flex items-center gap-1.5 min-w-[70px]">
-                  <Heart className="w-4 h-4" />
-                  <span>{(post.likes / 1000).toFixed(1)}k</span>
+              {/* Metrics Grid - Hidden on mobile, visible on larger screens */}
+              <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
+                <div className="flex items-center justify-center gap-1.5 w-[72px] py-1.5 px-2 rounded-md bg-muted/40 text-muted-foreground">
+                  <Heart className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-xs font-medium">{(post.likes / 1000).toFixed(1)}k</span>
                 </div>
-                <div className="flex items-center gap-1.5 min-w-[50px]">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>{post.comments}</span>
+                <div className="flex items-center justify-center gap-1.5 w-[64px] py-1.5 px-2 rounded-md bg-muted/40 text-muted-foreground">
+                  <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-xs font-medium">{post.comments}</span>
                 </div>
-                <div className="flex items-center gap-1.5 min-w-[50px]">
-                  <Share2 className="w-4 h-4" />
-                  <span>{post.shares}</span>
+                <div className="flex items-center justify-center gap-1.5 w-[56px] py-1.5 px-2 rounded-md bg-muted/40 text-muted-foreground">
+                  <Share2 className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-xs font-medium">{post.shares}</span>
                 </div>
-                <div className="flex items-center gap-1.5 min-w-[60px]">
-                  <Eye className="w-4 h-4" />
-                  <span>{(post.reach / 1000).toFixed(0)}k</span>
+                <div className="flex items-center justify-center gap-1.5 w-[64px] py-1.5 px-2 rounded-md bg-muted/40 text-muted-foreground">
+                  <Eye className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-xs font-medium">{(post.reach / 1000).toFixed(0)}k</span>
                 </div>
-                <div className="min-w-[60px] text-right">
-                  <span className="text-xs px-2 py-1 rounded-full bg-accent/20 text-accent font-medium">
+                <div className="flex items-center justify-center w-[72px] py-1.5 px-2 rounded-full bg-accent/20 shrink-0">
+                  <span className="text-xs font-semibold text-accent whitespace-nowrap">
                     {post.engagement}% ER
                   </span>
                 </div>
               </div>
 
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Mobile Metrics - Compact view for small screens */}
+              <div className="flex md:hidden items-center gap-2 shrink-0">
+                <div className="flex items-center justify-center py-1.5 px-2.5 rounded-full bg-accent/20">
+                  <span className="text-xs font-semibold text-accent whitespace-nowrap">
+                    {post.engagement}% ER
+                  </span>
+                </div>
+              </div>
+
+              {/* Sparkle Icon */}
+              <div className="hidden sm:flex opacity-0 group-hover:opacity-100 transition-opacity shrink-0 w-5 justify-center">
                 <Sparkles className="w-4 h-4 text-primary" />
               </div>
             </div>
