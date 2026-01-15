@@ -18,7 +18,11 @@ const data = [
   { name: "Sun", likes: 4900, comments: 920, shares: 490 },
 ];
 
-export function EngagementChart() {
+interface EngagementChartProps {
+  fullWidth?: boolean;
+}
+
+export function EngagementChart({ fullWidth = false }: EngagementChartProps) {
   return (
     <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-6">
@@ -44,7 +48,7 @@ export function EngagementChart() {
         </div>
       </div>
 
-      <div className="h-72">
+      <div className={fullWidth ? "h-96" : "h-72"}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>

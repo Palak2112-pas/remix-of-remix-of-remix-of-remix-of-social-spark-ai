@@ -3,7 +3,6 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { KPICard } from "@/components/dashboard/KPICard";
 import { EngagementChart } from "@/components/dashboard/EngagementChart";
-import { TopPosts } from "@/components/dashboard/TopPosts";
 import { PostingHeatmap } from "@/components/dashboard/PostingHeatmap";
 import { ContentDNA } from "@/components/dashboard/ContentDNA";
 import { StrategyChat } from "@/components/dashboard/StrategyChat";
@@ -76,11 +75,8 @@ export default function Index() {
               />
             </div>
 
-            {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <EngagementChart />
-              <TopPosts />
-            </div>
+            {/* Engagement Overview - Full Width */}
+            <EngagementChart fullWidth />
 
             {/* AI Insights Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
